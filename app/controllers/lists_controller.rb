@@ -4,6 +4,29 @@ class ListsController < ApplicationController
     @lists = List.all
   end
 
+  def show
+    @bookmarks = @list.bookmarks
+  end
+
+  def new
+    @list = List.new
+  end
+
+  def create
+    @list = List.new(list_params)
+    if @list.save
+      redirect_to @list, notice: "List was successfully created."
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @list = List.find(params[:id])
+    @list.destroy
+    redirect_to root_path, status: :see_other
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
